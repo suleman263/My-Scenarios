@@ -1,10 +1,13 @@
 package DB_DataRead;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class Read_DataDB {
@@ -16,6 +19,7 @@ public class Read_DataDB {
 			
 			//Class.forName("oracle.jdbc.driver.OracleDriver");
 			ArrayList<String> DBList = new ArrayList<String>();
+			ArrayList<String> DBList_col_type = new ArrayList<String>();
 			String driver = "oracle.jdbc.driver.OracleDriver";
 		Class.forName(driver);  
 		String conn_1="jdbc:oracle:thin:@nj09mhf0603-scan:1521/spreftst.world";
@@ -24,16 +28,29 @@ public class Read_DataDB {
 		PreparedStatement ps=con.prepareStatement(query);  
 		ResultSet rs=ps.executeQuery(); 
 	    rs.getMetaData();
-	    int cnt=rs.getMetaData().getColumnCount();
+	    int i,cnt=rs.getMetaData().getColumnCount();
 	    System.out.println(cnt);
-		while(rs.next())  
-			System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  
+		for(i=1;i<=cnt;i++)
+		{
+			String column_1=rs.getMetaData().getColumnName(i);
+			DBList.add(column_1);
+			System.out.println(rs.getMetaData().getColumnName(i));
+			String column_1_type=rs.getMetaData().getColumnTypeName(i);
+			System.out.println(rs.getMetaData().getColumnTypeName(i));
+			DBList_col_type.add(column_1_type);
+		}
+		System.out.println(DBList);
+		System.out.println(DBList_col_type);
+		
+		/*while(rs.next())  
+				System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));  
 		
 			//step5 close the connection object  
-			con.close();  
+			con.close();  */
 			  
 			
 	}catch(Exception e){ System.out.println(e);}
+		
 	}
 	}
 	
