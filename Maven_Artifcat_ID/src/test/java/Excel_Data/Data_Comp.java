@@ -8,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -22,7 +25,7 @@ public class Data_Comp {
 	public static XSSFWorkbook wb1;
 	public static XSSFSheet sh;
 	public static XSSFRow r;
-
+	Connection con_1;
 	
 	public XSSFCell read_data(String sheet,int r1,int col) throws IOException
     {
@@ -33,7 +36,10 @@ public class Data_Comp {
       XSSFCell cl = r.getCell(col);
 	return cl;
       }
-	
+	public void close_conn() throws SQLException
+	{
+		con_1.close();
+	}
 	public int last_cell_num(String sheet,int r1) throws IOException
 	{
 		 FileInputStream fs=new FileInputStream(path);
@@ -126,8 +132,8 @@ public class Data_Comp {
 		Connection con=DriverManager.getConnection(conn_1,"finmaster_etl_user","finmaster_etl_user");  
 		PreparedStatement ps=con.prepareStatement(query);  
 		ResultSet rs=ps.executeQuery();
-		return rs; 
-		//Test
+		this.con_1=con;
+		return rs;
 	}
 	public String conv_string(XSSFCell c1)
 	{
@@ -139,8 +145,9 @@ public class Data_Comp {
 	public static void main(String[] args) throws IOException,SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		Data_Comp d=new Data_Comp();
+		ArrayList<String> Rslt=new ArrayList<String>();  
 		int last_row=d.last_row("Querys"),i;
-		System.out.println(last_row);
+		System.out.println("Number of Query's in Excel : " + last_row);
 		System.out.println("Running the Query's");
 	/*	for(i=1;i<=last_row;i++)
 		{
@@ -154,6 +161,7 @@ public class Data_Comp {
 		d.write_data(result, i, 2);
 		}*/
 		int cnt_records = 0;
+
 		for(i=1;i<=last_row;i++)
 		{
 			Data_Comp d1=new Data_Comp();
@@ -186,9 +194,17 @@ public class Data_Comp {
 				 	//Below write result in excel
 				 	String result_1=d.result_cnt(srsc_cnt, trgt_cnt);
 				 	d.write_data_result(result_1, i, 6);
-				
+				 	
+				 	 XSSFCell result_2 = d.read_data("Querys", i, 6);
+					 String data_3=d1.conv_string(result_2);
+					 Rslt.add(data_3);
+				 	d1.close_conn();
 		}
 		System.out.println("Completed-Check Your excel");	
+		System.out.println(Rslt);
+		
+			
+		
 	}
-
+	
 }
