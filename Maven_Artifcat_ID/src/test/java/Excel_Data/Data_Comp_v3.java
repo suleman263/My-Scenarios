@@ -24,8 +24,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
-public class Data_Comp {
-	public String path="C:\\Test_Data\\DBQuery_Test.xlsx";
+public class Data_Comp_v3 {
+	public String path="C:\\Test_Data\\DBQuery_Test_v3.xlsx";
 	public static XSSFWorkbook wb1;
 	public static XSSFSheet sh;
 	public static XSSFRow r;
@@ -98,11 +98,11 @@ public class Data_Comp {
 		
 	}
 	//Write the query result data in excel
-	public void write_data(int result,int r1,int col) throws IOException
+	public void write_data(double srsc_cnt,int r1,int col) throws IOException
 	   {
 	   r=sh.getRow(r1);
 	   Cell cell= r.createCell(col);
-	   cell.setCellValue(result);
+	   cell.setCellValue(srsc_cnt);
 	   
 	      FileOutputStream fileOut = new FileOutputStream(path);
 	      wb1.write(fileOut);
@@ -145,18 +145,7 @@ public class Data_Comp {
 		this.con_1=con;
 		return rs;
 	}
-/*	public ResultSet get_data_db_dynamic(String query1,String driver1,String connection1,String uer_id,String pwd) throws ClassNotFoundException, SQLException
-	{
-		String driver = "oracle.jdbc.driver.OracleDriver";
-		Class.forName(driver1);  
-		String conn_1=connection1;
-		String query=query1;
-		Connection con=DriverManager.getConnection(conn_1,uer_id,pwd);  
-		PreparedStatement ps=con.prepareStatement(query);  
-		ResultSet rs=ps.executeQuery();
-		this.con_1=con;
-		return rs;
-	}*/
+
 	
 	//Converts Cell data type to String
 	public String conv_string(XSSFCell c1)
@@ -168,35 +157,18 @@ public class Data_Comp {
 	}
 	public static void main(String[] args) throws IOException,SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
-		Data_Comp init=new Data_Comp();
-	/*	XSSFCell init_driver,init_connection,init_uid,init_pwd;
-		init_driver=init.read_data("Connection", 0, 1);
-		String data_driver=init.conv_string(init_driver);
-		System.out.println(data_driver);
 		
-		init_connection=init.read_data("Connection", 1, 1);
-		String data_connection=init.conv_string(init_connection);
-		System.out.println(data_connection);
-		
-		init_uid=init.read_data("Connection", 2, 1);
-		String data_uid=init.conv_string(init_uid);
-		System.out.println(data_uid);
-		
-		init_pwd=init.read_data("Connection", 3, 1);
-		String data_pwd=init.conv_string(init_pwd);
-		System.out.println(data_pwd);*/
-		
-		Data_Comp d=new Data_Comp();
+		Data_Comp_v3 d=new Data_Comp_v3();
 		ArrayList<String> Rslt=new ArrayList<String>();  
 		ArrayList<String> Rslt_Time=new ArrayList<String>(); 
 		ArrayList<Number> Rslt_Time_Number=new ArrayList<Number>();
 		int last_row=d.last_row("Querys"),i;
 		System.out.println("Number of Query's in Excel : " + last_row);
 		System.out.println("Running the Query's");
-		int cnt_records = 0;
+		double cnt_records = 0;
 		for(i=1;i<=last_row;i++)
 		{
-			Data_Comp d1=new Data_Comp();
+			Data_Comp_v3 d1=new Data_Comp_v3();
 			//Below reads the data from source query
 			XSSFCell srsc_data = d.read_data("Querys", i, 2);
 			String data_1=d1.conv_string(srsc_data);
@@ -204,52 +176,29 @@ public class Data_Comp {
 			ResultSet rs1;
 			long startTime = System.currentTimeMillis();
 			rs1=d1.get_data_db(data_1);
-			int srsc_cnt,trgt_cnt = 0;
-			while(rs1.next()) 		
-				cnt_records=rs1.getInt(1);
+			double srsc_cnt;
+			while(rs1.next())
+				cnt_records=rs1.getDouble(1);
+			long endTime = System.currentTimeMillis();
+			Date pdt = new Date(endTime - startTime);
+			DateFormat perfdateFormat = new SimpleDateFormat("ss.SS");
+			String finalTime = perfdateFormat.format(pdt);
+			System.out.println(finalTime);
 			srsc_cnt=cnt_records;
-			    d.write_data(cnt_records, i, 3);
+			d.write_data(srsc_cnt, i, 3);
+			d.write_data_result(finalTime, i, 4);
+			    System.out.println(srsc_cnt);
 			 	//System.out.println(cnt_records);
-			 	
-			 	//Below reads the data from target query
-			 XSSFCell trgt_data = d.read_data("Querys", i, 4);
-			 String data_2=d1.conv_string(trgt_data);
-				//System.out.println(trgt_data);
-				ResultSet rs2;
-				//rs2=d1.get_data_db_dynamic(data_2, init_driver, data_connection, data_uid, data_pwd)
-				
-				rs2=d1.get_data_db(data_2);
-				long endTime = System.currentTimeMillis();
-				Date pdt = new Date(endTime - startTime);
-				DateFormat perfdateFormat = new SimpleDateFormat("ss.SS");
-				String finalTime = perfdateFormat.format(pdt);
-				System.out.println(finalTime);
-				while(rs2.next()) 	
-					cnt_records=rs2.getInt(1);
-				trgt_cnt=cnt_records;
-				    d.write_data(trgt_cnt, i, 5);
-				    d.write_data_result(finalTime, i, 7);
-				 	//System.out.println(trgt_cnt);
-				//step5 close the connection object  
-				 	
-				 	//Below write result in excel
-				 	String result_1=d.result_cnt(srsc_cnt, trgt_cnt);
-				 	d.write_data_result(result_1, i, 6);
-				 	
-				 	 XSSFCell result_2 = d.read_data("Querys", i, 6);
-					 String data_3=d1.conv_string(result_2);
-					 Rslt.add(data_3);
-				 	d1.close_conn();
-				 	Rslt_Time.add(finalTime);
 		}
+			 	
 		System.out.println("Completed-Check Your excel");	
-		//System.out.println(Rslt);
+		/*//System.out.println(Rslt);
 		int Pass_Count=Collections.frequency(Rslt, "Pass");
 		int Fail_Count=Collections.frequency(Rslt, "Fail");	
 		System.out.println("Pass :" + Pass_Count);
 		System.out.println("Fail :" + Fail_Count);
-		System.out.println(Rslt_Time);
+		System.out.println(Rslt_Time);*/
 	
 	}
+	}
 	
-}
