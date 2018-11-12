@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
@@ -26,10 +27,43 @@ public class Read_DataDB {
 		Class.forName(driver);  
 		String conn_1="jdbc:oracle:thin:@nj09mhf0603-scan:1521/spreftst.world";
 		String query="select count(*) from fin_Std_data_point where process_id='256624' and DP_SRC_DE_UNIQ_ID_TEXT='134024'";
-		String query_col="select unique DATA_TYPE  from ALL_TAB_COLUMNS where TABLE_NAME='DIM_DATASET_PROFILE'";
+		String query_agg="select sum(DATAITEMVALUE) from capiq.snlregflowperioddata where REGFLOWPERIODID='C2082AF8-C5EB-4AC9-AA89-000433736E81'";
+		String query_date="select MIN(DP_PERIOD_END_DATE),MAX(DP_PERIOD_END_DATE) from fin_Std_data_point where process_id='256624' and DP_SRC_DE_UNIQ_ID_TEXT='134024'";
+		String query_null_check="select count(*) from fin_Std_data_point where dp_value is null";
+		String query_max_string="select max(dp_value)  from fin_std_data_point";
 		Connection con=DriverManager.getConnection(conn_1,"finmaster_etl_user","finmaster_etl_user");  
-		PreparedStatement ps=con.prepareStatement(query);  
-		ResultSet rs=ps.executeQuery(); 
+		PreparedStatement ps=con.prepareStatement(query_date);  
+		ResultSet rs=ps.executeQuery();
+		ArrayList<String> srsc_data=new ArrayList<String>();
+		int i;
+		int col_cnt=rs.getMetaData().getColumnCount();
+		System.out.println(col_cnt);
+		while(rs.next())
+			for(i=1;i<=col_cnt;i++)
+			{
+				String ResColDataType = rs.getMetaData().getColumnTypeName(i);
+				System.out.println(ResColDataType);
+				if(ResColDataType == "NUMBER")
+				{
+				String rslt=String.valueOf(rs.getDouble(i));
+				srsc_data.add(rslt);
+				}
+				else if(ResColDataType == "DATE")
+				{
+				String rslt=String.valueOf(rs.getDate(i));
+				srsc_data.add(rslt);
+				}else if (ResColDataType == "VARCHAR2") {
+					String rslt = String.valueOf(rs.getString(i));
+					srsc_data.add(rslt);
+				}
+			}
+		String srsc_all_data = String.join(",", srsc_data);
+		//System.out.println(srsc_all_data);
+		ArrayList aList= new ArrayList(Arrays.asList(srsc_all_data.split(",")));
+		for(int j=0;j<aList.size();j++)
+		{
+		    System.out.println(aList.get(j));
+		}
 	  /*  rs.getMetaData();
 	    int i,cnt=rs.getMetaData().getColumnCount();
 	    System.out.println(cnt);
@@ -48,11 +82,7 @@ public class Read_DataDB {
 		System.out.println(DBList_col_type);
 		System.out.println(occurrences);
 		*/
-	while(rs.next())  
-				System.out.println(rs.getInt(1));  
 	
-			//step5 close the connection object  
-			con.close(); 
 			  
 			
 	}catch(Exception e){ System.out.println(e);}

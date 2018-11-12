@@ -42,5 +42,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/suleman_shaik/Downloads/ojdbc14.jar/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="C:/Jar/jdbc-oracle/jdbc-oracle.jar"/>
+	<classpathentry kind="lib" path="C:/Jars/jxl-2.6.jar/jxl-2.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
