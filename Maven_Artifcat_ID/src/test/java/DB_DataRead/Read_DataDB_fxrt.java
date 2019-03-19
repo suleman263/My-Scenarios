@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
-public class Read_DataDB {
+public class Read_DataDB_fxrt {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
@@ -25,14 +25,15 @@ public class Read_DataDB {
 			ArrayList<String> DBList_col_type = new ArrayList<String>();
 			String driver = "oracle.jdbc.driver.OracleDriver";
 		Class.forName(driver);  
-		String conn_1="jdbc:oracle:thin:@nj09mhf0603-scan:1521/spreftst.world";
+		String conn_1="jdbc:oracle:thin:@nj09mhf0603-scan/cmpqa.world";
 		String query="select count(*) from fin_Std_data_point where process_id='256624' and DP_SRC_DE_UNIQ_ID_TEXT='134024'";
 		String query_agg="select sum(DATAITEMVALUE) from capiq.snlregflowperioddata where REGFLOWPERIODID='C2082AF8-C5EB-4AC9-AA89-000433736E81'";
 		String query_date="select MIN(DP_PERIOD_END_DATE),MAX(DP_PERIOD_END_DATE) from fin_Std_data_point where process_id='256624' and DP_SRC_DE_UNIQ_ID_TEXT='134024'";
 		String query_null_check="select count(*) from fin_Std_data_point where dp_value is null";
 		String query_max_string="select max(dp_value)  from fin_std_data_point";
-		Connection con=DriverManager.getConnection(conn_1,"suleman_shaik","Gulshan1905!");  
-		PreparedStatement ps=con.prepareStatement(query_date);  
+		Connection con=DriverManager.getConnection(conn_1,"gs_gc","gs_gc");  
+		String temp="select max(FINS_INST_MNEM) from FT_T_CCRF";
+		PreparedStatement ps=con.prepareStatement(temp);  
 		ResultSet rs=ps.executeQuery();
 		ArrayList<String> srsc_data=new ArrayList<String>();
 		int i;
@@ -52,7 +53,12 @@ public class Read_DataDB {
 				{
 				String rslt=String.valueOf(rs.getDate(i));
 				srsc_data.add(rslt);
-				}else if (ResColDataType == "VARCHAR2") {
+				}
+				else if (ResColDataType == "VARCHAR2") {
+					String rslt = String.valueOf(rs.getString(i));
+					srsc_data.add(rslt);
+				}
+				else if (ResColDataType == "CHAR") {
 					String rslt = String.valueOf(rs.getString(i));
 					srsc_data.add(rslt);
 				}

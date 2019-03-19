@@ -13,7 +13,7 @@ public class Xpath_InDepth {
 		driver.get("http://demo.guru99.com/v1/");
 		driver.manage().window().maximize();
 		Thread.sleep(4000);	
-		driver.findElement(By.xpath("//*[contains[@onkeyup,'userid']]")).click();
+		driver.findElement(By.xpath("//*[contains(@onkeyup,'userid')]")).click();
 	}
 
 }

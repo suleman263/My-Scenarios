@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
-public class Read_DataDB {
+public class Read_DataDB_URL {
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
@@ -58,7 +58,7 @@ public class Read_DataDB {
 				}
 			}
 		String srsc_all_data = String.join(",", srsc_data);
-		System.out.println(srsc_all_data);
+		//System.out.println(srsc_all_data);
 		ArrayList aList= new ArrayList(Arrays.asList(srsc_all_data.split(",")));
 		for(int j=0;j<aList.size();j++)
 		{

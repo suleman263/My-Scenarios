@@ -1,10 +1,8 @@
-package Excel_Data;
+package IDF_Main_Query;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringBufferInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,24 +11,17 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 
-public class Data_Comp_v5 {
-	public String path = "C:\\Test_Data\\DBQuery_Test_v5.xlsx";
+public class Data_Comp_v7 {
+	public String path = "C:\\Users\\suleman_shaik\\workspace\\IDF_AID\\Querys\\DBQuery_Test_v6.xlsx";
 	public static XSSFWorkbook wb1;
 	public static XSSFSheet sh;
 	public static XSSFRow r;
@@ -72,23 +63,6 @@ public class Data_Comp_v5 {
 
 	}*/
 
-	// Get the count number of rows in the particular sheet
-	public int last_cell_num(String sheet, int r1) throws IOException {
-		FileInputStream fs = new FileInputStream(path);
-		wb1 = new XSSFWorkbook(fs);
-		sh = wb1.getSheet(sheet);
-		r = sh.getRow(r1);
-		r.getLastCellNum();
-		int last_cell = r.getLastCellNum();
-		return last_cell;
-
-	}
-
-	public CellType get_cell_tye(XSSFCell C1) {
-		return C1.getCellType();
-
-	}
-
 	public String result(XSSFCell srsc, XSSFCell trgt) {
 		DataFormatter fmt = new DataFormatter();
 		String srsc_1 = fmt.formatCellValue(srsc);
@@ -102,18 +76,6 @@ public class Data_Comp_v5 {
 		}
 		return value;
 
-	}
-
-	// Write the query result data in excel
-	public void write_data(double srsc_cnt, int r1, int col) throws IOException {
-		r = sh.getRow(r1);
-		Cell cell = r.createCell(col);
-		cell.setCellValue(srsc_cnt);
-
-		FileOutputStream fileOut = new FileOutputStream(path);
-		wb1.write(fileOut);
-		fileOut.flush();
-		fileOut.close();
 	}
 
 	// Write the results in the excel data comparison between source and target
@@ -139,12 +101,12 @@ public class Data_Comp_v5 {
 	}
 
 	// Get the Query result from source
-	public ResultSet get_data_db(String query1) throws ClassNotFoundException, SQLException {
-		String driver = "oracle.jdbc.driver.OracleDriver";
+	public ResultSet get_data_db(String driv,String conn_str,String uid,String pwd,String query1) throws ClassNotFoundException, SQLException {
+		String driver = driv;
 		Class.forName(driver);
-		String conn_1 = "jdbc:oracle:thin:@nj09mhf0603-scan:1521/spreftst.world";
+		String conn_1 = conn_str;
 		String query = query1;
-		Connection con = DriverManager.getConnection(conn_1, "finmaster_etl_user", "finmaster_etl_user");
+		Connection con = DriverManager.getConnection(conn_1, uid, pwd);
 		PreparedStatement ps = con.prepareStatement(query);
 		ResultSet rs = ps.executeQuery();
 		this.con_1 = con;
@@ -176,7 +138,7 @@ public class Data_Comp_v5 {
 		// TODO Auto-generated method stub
 
 		// insertDataIntoExcel("967987", 1, 3);
-		Data_Comp_v5 d = new Data_Comp_v5();
+		Data_Comp_v7 d = new Data_Comp_v7();
 		/*
 		 * ArrayList<String> Rslt=new ArrayList<String>(); ArrayList<String>
 		 * Rslt_Time=new ArrayList<String>(); ArrayList<Number>
@@ -187,17 +149,29 @@ public class Data_Comp_v5 {
 		System.out.println("Number of Query's in Excel : " + last_row);
 		System.out.println("Running the Query's");
 		ArrayList<String> col_typ = new ArrayList();
-		double cnt_records = 0;
 		for (i = 1; i <= last_row; i++) {
-			System.out.println("Running the QUery " + i);
-			Data_Comp_v5 d1 = new Data_Comp_v5();
+			System.out.println("Running the Query " + i);
+			Data_Comp_v7 d1 = new Data_Comp_v7();
+			//Below gets the db connections
+			XSSFCell driver_c = d.read_data("Connection", 1, 1);
+			String driver = d1.conv_string(driver_c);
+			//System.out.println(driver);
+			XSSFCell conn_c = d.read_data("Connection", 2, 1);
+			String conn = d1.conv_string(conn_c);
+			//System.out.println(conn);
+			XSSFCell user_id_c = d.read_data("Connection", 3, 1);
+			String user_id = d1.conv_string(user_id_c);
+			//System.out.println(user_id);
+			XSSFCell pwd_c = d.read_data("Connection", 4, 1);
+			String pwd = d1.conv_string(pwd_c);
+			//System.out.println(pwd);
 			// Below reads the data from source query
-			XSSFCell srsc_data = d.read_data("Querys", i, 2);
+			XSSFCell srsc_data = d.read_data("Querys", i, 5);
 			String data_1 = d1.conv_string(srsc_data);
 			// System.out.println(srsc_data);
 			ResultSet rs1;
 			long startTime = System.currentTimeMillis();
-			rs1 = d1.get_data_db(data_1);
+			rs1 = d1.get_data_db(driver,conn,user_id,pwd,data_1);
 			int cnt_col = rs1.getMetaData().getColumnCount();
 
 			// System.out.println(cnt_col);
@@ -230,17 +204,17 @@ public class Data_Comp_v5 {
 			// d.insertDataIntoExcel(srsc_all_data, i, 3);
 			// d.write_data_result(srsc_all_data, i, 3);
 			// d.write_data(srsc_cnt, i, 3);
-			d.write_data_result(finalTime, i, 4);
+			//d.write_data_result(finalTime, i, 4);
 			// System.out.println(srsc_cnt);
 			// System.out.println(cnt_records);
 			srsc_all_data = String.join(",", col_data);
 			System.out.println(srsc_all_data);
-			d.write_data_result(srsc_all_data, i, 3);
+			d.write_data_result(srsc_all_data, i, 6);
 			// insertDataIntoExcel(srsc_all_data,i,3);
-			XSSFCell trgt_data = d.read_data("Querys", i, 5);
-			String trgt_data_string = d.conv_string(trgt_data);
-			System.out.println(d.result(srsc_all_data, trgt_data_string));
-			d.write_data_result(d.result(srsc_all_data, trgt_data_string), i, 6);
+			//XSSFCell trgt_data = d.read_data("Querys", i, 5);
+			//String trgt_data_string = d.conv_string(trgt_data);
+			//System.out.println(d.result(srsc_all_data, trgt_data_string));
+			//d.write_data_result(d.result(srsc_all_data, trgt_data_string), i, 6);
 			srsc_all_data = null;
 			col_data.clear();
 

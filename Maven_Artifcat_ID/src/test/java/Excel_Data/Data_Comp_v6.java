@@ -29,7 +29,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 
-public class Data_Comp_v5 {
+public class Data_Comp_v6 {
 	public String path = "C:\\Test_Data\\DBQuery_Test_v5.xlsx";
 	public static XSSFWorkbook wb1;
 	public static XSSFSheet sh;
@@ -139,12 +139,12 @@ public class Data_Comp_v5 {
 	}
 
 	// Get the Query result from source
-	public ResultSet get_data_db(String query1) throws ClassNotFoundException, SQLException {
-		String driver = "oracle.jdbc.driver.OracleDriver";
+	public ResultSet get_data_db(String driv,String conn_str,String uid,String pwd,String query1) throws ClassNotFoundException, SQLException {
+		String driver = driv;
 		Class.forName(driver);
-		String conn_1 = "jdbc:oracle:thin:@nj09mhf0603-scan:1521/spreftst.world";
+		String conn_1 = conn_str;
 		String query = query1;
-		Connection con = DriverManager.getConnection(conn_1, "finmaster_etl_user", "finmaster_etl_user");
+		Connection con = DriverManager.getConnection(conn_1, uid, pwd);
 		PreparedStatement ps = con.prepareStatement(query);
 		ResultSet rs = ps.executeQuery();
 		this.con_1 = con;
@@ -176,7 +176,7 @@ public class Data_Comp_v5 {
 		// TODO Auto-generated method stub
 
 		// insertDataIntoExcel("967987", 1, 3);
-		Data_Comp_v5 d = new Data_Comp_v5();
+		Data_Comp_v6 d = new Data_Comp_v6();
 		/*
 		 * ArrayList<String> Rslt=new ArrayList<String>(); ArrayList<String>
 		 * Rslt_Time=new ArrayList<String>(); ArrayList<Number>
@@ -190,14 +190,24 @@ public class Data_Comp_v5 {
 		double cnt_records = 0;
 		for (i = 1; i <= last_row; i++) {
 			System.out.println("Running the QUery " + i);
-			Data_Comp_v5 d1 = new Data_Comp_v5();
+			Data_Comp_v6 d1 = new Data_Comp_v6();
+			//Below gets the db connections
+			XSSFCell driver_c = d.read_data("Connection", 1, 1);
+			String driver = d1.conv_string(driver_c);
+			XSSFCell conn_c = d.read_data("Connection", 2, 1);
+			String conn = d1.conv_string(conn_c);
+			XSSFCell user_id_c = d.read_data("Connection", 3, 1);
+			String user_id = d1.conv_string(user_id_c);
+			XSSFCell pwd_c = d.read_data("Connection", 4, 1);
+			String pwd = d1.conv_string(pwd_c);
+			
 			// Below reads the data from source query
 			XSSFCell srsc_data = d.read_data("Querys", i, 2);
 			String data_1 = d1.conv_string(srsc_data);
 			// System.out.println(srsc_data);
 			ResultSet rs1;
 			long startTime = System.currentTimeMillis();
-			rs1 = d1.get_data_db(data_1);
+			rs1 = d1.get_data_db(driver,conn,user_id,pwd,data_1);
 			int cnt_col = rs1.getMetaData().getColumnCount();
 
 			// System.out.println(cnt_col);
