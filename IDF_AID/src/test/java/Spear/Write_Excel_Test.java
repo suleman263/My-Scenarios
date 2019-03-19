@@ -16,8 +16,7 @@ public class Write_Excel_Test {
 		// TODO Auto-generated method stub
 		//FileInputStream fs2 = new FileInputStream(path2);
 		//wb2 = new XSSFWorkbook(fs2);
-		//sh2 = wb2.getSheet("Data");
-		
+		//sh2 = wb2.getSheet("Data");		
 		XSSFWorkbook wb = new XSSFWorkbook(); 
 		XSSFSheet sh = wb.createSheet("Test"); 
 		XSSFRow row = sh.createRow(1);
