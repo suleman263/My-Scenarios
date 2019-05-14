@@ -26,5 +26,14 @@
 	<classpathentry kind="lib" path="C:/Jar/jdbc-oracle/jdbc-oracle.jar"/>
 	<classpathentry kind="lib" path="C:/IDF/SimbaSparkJDBC41-2.6.3.1003/SparkJDBC41.jar"/>
 	<classpathentry kind="lib" path="C:/Jar/fillo-1.15 (1)/fillo-1.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/suleman_shaik/.m2/repository/com/github/javafaker/javafaker/0.12/javafaker-0.12.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="com.github.javafaker"/>
+			<attribute name="maven.artifactId" value="javafaker"/>
+			<attribute name="maven.version" value="0.12"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -34,7 +34,7 @@ public class DQ_Excel_Custom {
 		//arrowtst.world
 	
 	public String path = "C:\\Test_Data\\Table_MetaData.xlsx";
-	public String path2 = "C:\\Users\\suleman_shaik\\workspace\\IDF_AID\\Querys\\DBQuery_Test_v5.xlsx";
+	public String path2 = "C:\\Test_Data\\DBQuery_Test_v5.xlsx";
 	public static String conn_server="jdbc:oracle:thin:@fgraci31dqa2.qa.spratingsvpc.com:1522/cmpqa.world";
 	public static XSSFWorkbook wb1, wb2;
 	public static XSSFSheet sh, sh2;
@@ -412,7 +412,8 @@ public class DQ_Excel_Custom {
 		   Class.forName("com.simba.spark.jdbc41.Driver");  
 
 			//step2 create  the connection object  
-			Connection con=DriverManager.getConnection("jdbc:spark://localhost:10001/default","","");  
+		   //con="jdbc:spark://localhost:10001/default"
+			Connection con=DriverManager.getConnection("jdbc:spark://idf-namenode-emr-qa.qa.spratingsvpc.com:10001/default","","");  
 
 			//step3 create the statement object  
 			Statement stmt=con.createStatement();  
@@ -499,7 +500,8 @@ public class DQ_Excel_Custom {
 		String sch1= df.formatCellValue(sch);
 		String tab1 = df.formatCellValue(tab);
 		//String s3_table = db1+"_"+sch1+"."+"v"+"_"+tab1;
-		String s3_table = sch1.toLowerCase()+"_qa"+"."+"v"+"_"+tab1;
+		//String s3_table = sch1.toLowerCase()+"_qa"+"."+"v"+"_"+tab1;
+		String s3_table = sch1+"."+"v"+"_"+tab1;
 		return s3_table;
 		
 	}
@@ -538,7 +540,7 @@ System.out.println("Current Loop--->"+i);
 			temp_max_min = D.read_data("Table", i, 4);
 			temp_agg_sum = D.read_data("Table", i, 3);
 			//**Null check is commented
-			//temp_null = D.read_data("Col", i, 7);
+		//	temp_null = D.read_data("Table", i, 7);
 			sch = D.conv_string(temp_sch);
 			tab = D.conv_string(temp_tab);
 			max_min_2 = D.conv_string(temp_max_min);
@@ -682,16 +684,17 @@ System.out.println("Current Loop--->"+i);
 			D.write_data_result_db(table_1, k, 2);
 			String query = D.conv_string(D.read_data_db("Querys", k, 5));
 			System.out.println("Executing the Query-->"+query);
-			if (query.contains("count")) {
-				D.write_data_result_db("Count", k, 3);
+			if (query.contains("count") && !query.contains("is null")) {
+					D.write_data_result_db("Count", k, 3);
 			} else if (query.contains("max")) {
 				D.write_data_result_db("Max_Min", k, 3);
 
 			} else if (query.contains("sum")) {
 				D.write_data_result_db("Sum_Avg", k, 3);
 
-			} else if (query.contains("is null") && query.contains("count(*)")) {
-				D.write_data_result_db("Distinct", k, 3);
+			} else if (query.contains("count") && query.contains("is null")) {
+				
+				D.write_data_result_db("Null_Count", k, 3);
 
 			}
 			long startTime = System.currentTimeMillis();

@@ -22,6 +22,7 @@ public class Write_Excel_Test {
 		XSSFRow row = sh.createRow(1);
 		XSSFCell cell=row.createCell(0);
 		cell.setCellValue(1); 
+		System.out.println("Completed Writing the excel");
 	    FileOutputStream fileOut = new FileOutputStream(path2);
      	wb.write(fileOut);
 	    fileOut.flush();

@@ -26,6 +26,8 @@ public class ERTest extends ScreenShot{
 	test = report.startTest("FREE CRM Testing");
 	
 	}*/
+	
+	//StartTest(Heading)--->log(base)
 	@BeforeTest()
 	public void run_chrome()
 	{

@@ -47,9 +47,11 @@ public class Read_Excel_Spear_v2 {
 		con.executeUpdate(query_insert);
 		con.close();
 	}
+	
 	public void write_data_result_db(String result, int r1, int col) throws IOException {
-		r2 = sh2.getRow(r1);
-
+		
+       
+        r2 = sh2.getRow(r1);
 		Cell cell = r2.createCell(col);
 		cell.setCellValue(result);
 
@@ -94,6 +96,8 @@ public class Read_Excel_Spear_v2 {
 		int row_count = r.row_count(Sheet_Name);
 		int col_count = r.column_count(Sheet_Name);
 		List<Double> list = new ArrayList<Double>();
+		//r.create_rows();
+		System.out.println("Starting Loop");
 		for (int j = 1; j <= col_count; j++) {
 			try {
 				for (int i = 5; i <= row_count; i++) {

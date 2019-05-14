@@ -50,6 +50,7 @@ public class FC_Deal_Test {
 		driver.findElement(By.id("f_trigger_c_close_date")).click();
 		//driver.switchTo().frame("processFrame");
 		Thread.sleep(5000);
+		driver.findElement(By.xpath("(//td[contains(text(),'29')])[2]")).click();
 	//	WebElement date_1=driver.findElement(By.xpath("(//div[@class='calendar'])"));
 		//List<WebElement> l_td=driver.findElements(By.tagName("td"));
 		//System.out.println(l_td.size());

@@ -53,11 +53,11 @@ public class FC_Deal_Test_2 {
 		//driver.switchTo().frame("mainpanel");
 		driver.findElement(By.xpath("(//td[contains(text(),'12')])[1]")).click();
 		//Thread.sleep(10000);
-		
-		WebElement pc_date=driver.findElement(By.id("fieldId_actual_close_date"));
-		executor.executeScript("arguments[0].click();", pc_date);
+		driver.findElement(By.id("f_trigger_c_actual_close_date")).click();
+	//	WebElement pc_date=driver.findElement(By.id("fieldId_actual_close_date"));
+		//executor.executeScript("arguments[0].click();", pc_date);
 		Thread.sleep(5000);
-		driver.findElement(By.xpath("(//td[contains(text(),'12')])[1]")).click();
+		driver.findElement(By.xpath("(//td[contains(text(),'12')])[3]")).click();
 		driver.findElement(By.xpath("//input[@value='Save']")).click();
 	//	WebElement date_1=driver.findElement(By.xpath("(//div[@class='calendar'])"));
 		//List<WebElement> l_td=driver.findElements(By.tagName("td"));
