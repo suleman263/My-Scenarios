@@ -35,7 +35,7 @@ public class DQ_Excel_Custom {
 	
 	public String path = "C:\\Test_Data\\Table_MetaData.xlsx";
 	public String path2 = "C:\\Test_Data\\DBQuery_Test_v5.xlsx";
-	public static String conn_server="jdbc:oracle:thin:@fgraci31dqa2.qa.spratingsvpc.com:1522/cmpqa.world";
+	public static String conn_server="jdbc:oracle:thin:@fgraci31-scan.qa.spratingsvpc.com:1522/rrdwqa.world";
 	public static XSSFWorkbook wb1, wb2;
 	public static XSSFSheet sh, sh2;
 	public static XSSFRow r, r2;

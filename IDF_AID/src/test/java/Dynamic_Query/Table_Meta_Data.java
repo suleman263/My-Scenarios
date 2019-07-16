@@ -22,8 +22,10 @@ public class Table_Meta_Data {
 	//rrdwqa.world-"jdbc:oracle:thin:@fgraci31-scan.qa.spratingsvpc.com:1522/rrdwqa.world"
 	//spreftst.world-"jdbc:oracle:thin:@nj09mhf0603-scan/spreftst.world"
 	//cmpqa.world-"jdbc:oracle:thin:@fgraci31dqa2.qa.spratingsvpc.com:1522/cmpqa.world"
+	//sfrefqa.world-"jdbc:oracle:thin:@fgraci3uat3-scan.uat.spratingsvpc.com:1521/sfrefqa.world";
 	//arrowtst.word
-	public static String conn_server="jdbc:oracle:thin:@fgraci31dqa2.qa.spratingsvpc.com:1522/cmpqa.world";
+	//sfqa.world-"jdbc:oracle:thin:@ffgracebsuat2-scan.uat.spratingsvpc.com:1521/sfqa.world"
+	public static String conn_server="jdbc:oracle:thin:@fgraci31-scan.qa.spratingsvpc.com:1522/rrdwqa.world";
 	public static XSSFSheet sh;
 	public static XSSFRow r;
 	public XSSFCell read_data(String sheet, int r1, int col) throws IOException {
@@ -72,7 +74,9 @@ public class Table_Meta_Data {
 		String query_date="select MIN(DP_PERIOD_END_DATE),MAX(DP_PERIOD_END_DATE) from fin_Std_data_point where process_id='256624' and DP_SRC_DE_UNIQ_ID_TEXT='134024'";
 		String query_null_check="select count(*) from fin_Std_data_point where dp_value is null";
 		String query_max_string="select max(dp_value)  from fin_std_data_point";*/
-		Connection con=DriverManager.getConnection(conn_1,"IDF_SQOOP_USER","sqoopusr");  
+	Connection con=DriverManager.getConnection(conn_1,"IDF_SQOOP_USER","sqoopusr");  
+		//Connection con=DriverManager.getConnection(conn_1,"SFDISB","sfdisb");
+		
 		//System.out.println(query);
 		PreparedStatement ps=con.prepareStatement(query);  
 		ResultSet rs=ps.executeQuery();
