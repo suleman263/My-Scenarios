@@ -3,13 +3,11 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="ExtentReport.ERTest">
+      <class name="ExtentReport.ER_Excel">
         <methods>
-          <include name="run_chrome"/>
-          <include name="extentReportsDemo"/>
-          <include name="endTest"/>
+          <include name="report_build"/>
         </methods>
-      </class> <!-- ExtentReport.ERTest -->
+      </class> <!-- ExtentReport.ER_Excel -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

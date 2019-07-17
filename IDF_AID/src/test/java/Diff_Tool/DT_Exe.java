@@ -170,10 +170,18 @@ System.out.println(s3);
 System.out.println(D.get_data_s3(s3));
 String res=D.get_data_s3(s3);
 System.out.println(res);
-String[] res1=res.split(",");
-String comments=res1[0];
-String sourcecnt=res1[1];
-String targetcnt=res1[2];
+String[] res1=null;
+String comments = null;
+String sourcecnt = null;
+String targetcnt = null;
+try {
+	res1=res.split(",");
+	comments = res1[0];
+	sourcecnt = res1[1];
+	targetcnt = res1[2];
+} catch (Exception e) {
+	e.printStackTrace();
+}
 System.out.println(comments);
 System.out.println(sourcecnt);
 System.out.println(targetcnt);

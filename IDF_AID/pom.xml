@@ -21,14 +21,14 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    
-    <dependency>
+     
+   <!--  <dependency>
     <groupId>jdk.tools</groupId>
     <artifactId>jdk.tools</artifactId>
     <version>1.8</version>
     <scope>system</scope>
     <systemPath>C:\Program Files\Java\jdk1.8.0_171\lib\tools.jar</systemPath>
-</dependency>
+</dependency>  -->
     
     <!-- https://mvnrepository.com/artifact/org.apache.hive/hive-jdbc -->
 <dependency>
@@ -43,6 +43,14 @@
     <artifactId>poi</artifactId>
     <version>4.0.0</version>
 </dependency>
+
+<!-- https://mvnrepository.com/artifact/com.relevantcodes/extentreports -->
+<dependency>
+    <groupId>com.relevantcodes</groupId>
+    <artifactId>extentreports</artifactId>
+    <version>2.40.2</version>
+</dependency>
+
     <dependency>
   <groupId>com.codoid.products</groupId>
   <artifactId>fillo</artifactId>

@@ -35,7 +35,7 @@ public class ERTest extends ScreenShot{
 		test = report.startTest("FREE CRM Testing");	
 		System.setProperty("webdriver.chrome.driver", "C:\\Selenium_Chrome\\chromedriver_win32\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
-		driver.get("https://www.freecrm.com/index.html");
+		driver.get("https://classic.crmpro.com/login.cfm");
 		this.driver=driver;
 		System.out.println(driver.getTitle());
 		test.log(LogStatus.PASS, "CRM URL is Invoked");
@@ -48,7 +48,7 @@ public class ERTest extends ScreenShot{
 		ExtentTest test2 = report.startTest("Verify the Login");
 		//test.log(LogStatus.PASS, "Navigated to FREE CRM");   
 		Thread.sleep(5000);
-	  	driver.findElement(By.xpath("//input[@placeholder='Username']")).sendKeys("suleman263");
+	  	driver.findElement(By.xpath("//input[@placeholder='username']")).sendKeys("suleman263");
 		driver.findElement(By.xpath("//input[@placeholder='Password']")).sendKeys("Arshiya1905!2");
 		Thread.sleep(5000);
 		WebElement element=driver.findElement(By.xpath("//input[@type='submit']"));
